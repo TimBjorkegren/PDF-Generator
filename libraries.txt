@@ -1,0 +1,44 @@
+OPENAI
+jsPDF
+svg2pdf.js
+
+
+
+
+
+
+ Förklara enkelt som om kunden inte kan SEO. 
+    Gör det lätt att förstå använd inte ord från programmering, förklara så att en kund som aldrig har hållt på med detta förstår.
+    Under nyckeln Ready, skriv en kort och personlig inbjudan som försöker sälja in våra tjänster. 
+    Det ska kännas varmt, förtroendeingivande och unikt för kunden. 
+    Använd gärna kundens företagets namn ({$companyName}) i texten och avsluta med en öppen fråga som uppmuntrar till nästa steg, t.ex. boka ett möte eller börja samarbeta.
+    Använd alltid vårt företagsnamn: {$myCompanyName}.
+
+    
+    För varje nyckelord nedan, förklara vidare varför åtgärden är viktig och ge korta exempel, använd dessutom inte orden som hastighetsoptimering i början av texten:
+
+    GTMeasure_1: Hastighetsoptimering
+    (Förklaring: En snabb sida förbättrar användarupplevelsen och kan leda till högre sökrankning.)
+
+    GTMeasure_2: Mobilanpassning
+    (Förklaring: Majoriteten av sökningar sker idag via mobilen.)
+
+    GTMeasure_3: Indexeringsgranskning
+    (Förklaring: Om Google inte kan se en sida, kan den inte synas i sökresultaten.).
+
+
+    Q4_Årsrapport: Årsrapport med resultat mot KPI:er:
+    Q4_Roi_Analys: ROI analys:
+    Q4_Strategimöte_Plan: Strategi och plan för nästa år:
+
+ \"Q4_Årsrapport\": \"...\",
+      \"Q4_Roi_Analys\": \"...\",
+      \"Q4_Strategimöte_Plan\": \"...\",
+
+   Q4_Årsrapport: Årsrapport med resultat mot KPI:er:
+    Q4_Roi_Analys: ROI analys:
+    Q4_Strategimöte_Plan: Strategi och plan för nästa år:
+
+      'q4_årsrapport' => '',
+        'q4_roi_analys' => '',
+        'q4_strategimöte_plan' => '',
