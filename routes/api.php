@@ -40,7 +40,9 @@ Route::post('/generate-observations', function (Request $request) {
       \"Q4_Bygga_Starkare_Länkar\": \"...\",
       \"Q4_Utbildning_Kund\": \"...\",
       \"Q4_Offpage\": \"...\",
-     
+      \"Q4_Arsrapport\": \"...\",
+      \"Q4_Roi_Analys\": \"...\",
+      \"Q4_Strategimöte_Plan\": \"...\",
     }
 
     Instruktioner:
@@ -77,12 +79,14 @@ Route::post('/generate-observations', function (Request $request) {
     Q4_Bygga_Starkare_Länkar: Bygga starkare länkar:
     Q4_Utbildning_Kund: eventuellt utbildning för kund:
     Q4_Offpage: Offpage:
- 
+    Q4_Arsrapport: Årsrapport med resultat mot KPI:er:
+    Q4_Roi_Analys: ROI analys:
+    Q4_Strategimöte_Plan: Strategi och plan för nästa år:
     ";
     
 
     $response = OpenAI::chat()->create([
-        'model' => 'gpt-4o-mini',
+        'model' => 'gpt-4o',
         'messages' => [
             ['role' => 'system', 'content' => 'Du är en SEO-expert.'],
             ['role' => 'user', 'content' => $prompt],
@@ -126,6 +130,9 @@ Route::post('/generate-observations', function (Request $request) {
         'q4_bygga_starkare_länkar' => '',
         'q4_utbildning_kund' => '',
         'q4_offpage' => '',
+        'q4_arsrapport' => '',
+        'q4_roi_analys' => '',
+        'q4_strategimöte_plan' => '',
         
     ];
     if (is_array($observations)) {

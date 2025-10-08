@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         fontFamily: "Helvetica",
     },
     heading: {
-        fontSize: 25,
+        fontSize: 22,
         fontWeight: "bold",
         marginTop: 16,
         marginBottom: 8,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         textAlign: "left",
     },
     centeredTitle: {
-        fontSize: 22,
+        fontSize: 25,
         textAlign: "center",
         marginBottom: 20,
         fontWeight: "bold",
@@ -188,7 +188,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                 söker efter de tjänster eller produkter ni erbjuder, vill vi se
                 till att det är er de hittar.
             </Paragraph>
-            <Paragraph>
+            <Paragraph style={{ alignSelf: "center" }}>
                 SEO (sökmotoroptimering) handlar om att göra er hemsida,{" "}
                 {formData.domainName}, så relevant och användarvänlig som
                 möjligt, både för besökare och för sökmotorer som Google. Det är
@@ -325,6 +325,8 @@ const MyPDF = ({ formData, observations, favicon }) => (
                 </View>
             </View>
 
+            <View style={styles.divider} />
+
             <Heading style={styles.subheadings_1}>
                 Fokusområde: On-page & Struktur
             </Heading>
@@ -334,7 +336,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                     <Text style={styles.bullet}>• </Text>
                     <Text style={{ fontWeight: "bold" }}>
                         Optimera titlar, metabeskrivningar, headings,
-                        URL-struktur
+                        URL-struktur:
                     </Text>
                     <Paragraph>
                         {" "}
@@ -347,7 +349,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                 <Text style={styles.listText}>
                     <Text style={styles.bullet}>• </Text>
                     <Text style={{ fontWeight: "bold" }}>
-                        Skapa sajtstruktur & interna länkar
+                        Skapa sajtstruktur & interna länkar:
                     </Text>
                     <Paragraph>
                         {" "}
@@ -360,7 +362,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                 <Text style={styles.listText}>
                     <Text style={styles.bullet}>• </Text>
                     <Text style={{ fontWeight: "bold" }}>
-                        Innehållsplan för 12 månader
+                        Innehållsplan för 12 månader:
                     </Text>
                     <Paragraph> {observations.q1_innehållsplan}</Paragraph>
                 </Text>
@@ -369,7 +371,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
             <View style={styles.listItem}>
                 <Text style={styles.listText}>
                     <Text style={styles.bullet}>• </Text>
-                    <Text style={{ fontWeight: "bold" }}>Offpage</Text>
+                    <Text style={{ fontWeight: "bold" }}>Offpage: </Text>
                     <Paragraph> {observations.q1_offpage}</Paragraph>
                 </Text>
             </View>
@@ -440,7 +442,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                     <Text style={styles.listText}>
                         <Text style={styles.bullet}>• </Text>
                         <Text style={{ fontWeight: "bold" }}>
-                            Starta länkstrategi & outreach :
+                            Starta länkstrategi & outreach:
                         </Text>
                         <Paragraph>
                             {" "}
@@ -452,7 +454,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                 <View style={styles.listItem}>
                     <Text style={styles.listText}>
                         <Text style={styles.bullet}>• </Text>
-                        <Text style={{ fontWeight: "bold" }}>Offpage :</Text>
+                        <Text style={{ fontWeight: "bold" }}>Offpage: </Text>
                         <Paragraph> {observations.q2_offpage}</Paragraph>
                     </Text>
                 </View>
@@ -501,7 +503,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                     <Text style={styles.listText}>
                         <Text style={styles.bullet}>• </Text>
                         <Text style={{ fontWeight: "bold" }}>
-                            Lokal SEO om relevant:
+                            Lokal SEO om relevant:{" "}
                         </Text>
                         <Paragraph>{observations.q3_lokal_seo}</Paragraph>
                     </Text>
@@ -519,7 +521,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                     <Text style={styles.listText}>
                         <Text style={styles.bullet}>• </Text>
                         <Text style={{ fontWeight: "bold" }}>
-                            Schema markup & rich results :
+                            Schema markup & rich results:
                         </Text>
                         <Paragraph>
                             {" "}
@@ -531,7 +533,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                 <View style={styles.listItem}>
                     <Text style={styles.listText}>
                         <Text style={styles.bullet}>• </Text>
-                        <Text style={{ fontWeight: "bold" }}>Offpage :</Text>
+                        <Text style={{ fontWeight: "bold" }}>Offpage: </Text>
                         <Paragraph> {observations.q3_offpage}</Paragraph>
                     </Text>
                 </View>
@@ -570,7 +572,6 @@ const MyPDF = ({ formData, observations, favicon }) => (
                             Utvärdera rankingar & trafik:
                         </Text>
                         <Paragraph>
-                            {" "}
                             {observations.q4_utvärdera_rankingar_trafik}
                         </Paragraph>
                     </Text>
@@ -595,7 +596,6 @@ const MyPDF = ({ formData, observations, favicon }) => (
                             Bygga starkare länkar:
                         </Text>
                         <Paragraph>
-                            {" "}
                             {observations.q4_bygga_starkare_länkar}
                         </Paragraph>
                     </Text>
@@ -607,41 +607,40 @@ const MyPDF = ({ formData, observations, favicon }) => (
                         <Text style={{ fontWeight: "bold" }}>
                             Eventuellt utbildning för kund:
                         </Text>
-                        <Paragraph>
-                            {" "}
-                            {observations.q4_utbildning_kund}
-                        </Paragraph>
+                        <Paragraph>{observations.q4_utbildning_kund}</Paragraph>
                     </Text>
                 </View>
 
                 <View style={styles.listItem}>
                     <Text style={styles.listText}>
                         <Text style={styles.bullet}>• </Text>
-                        <Text style={{ fontWeight: "bold" }}>Offpage :</Text>
-                        <Paragraph> {observations.q4.offpage}</Paragraph>
+                        <Text style={{ fontWeight: "bold" }}>Offpage: </Text>
+                        <Paragraph> {observations.q4_offpage}</Paragraph>
                     </Text>
                 </View>
             </View>
+
+            <View style={styles.divider} />
 
             <Heading style={styles.subheadings_1}>
                 Fokusområde: Utvädering & Nästa steg
             </Heading>
 
-            {/*<View>
+            <View>
                 <View style={styles.listItem}>
                     <Text style={styles.listText}>
                         <Text style={styles.bullet}>• </Text>
                         <Text style={{ fontWeight: "bold" }}>
                             Årsrapport med resultat mot KPI:er:
                         </Text>
-                        <Paragraph> {observations.q4_årsrapport}</Paragraph>
+                        <Paragraph> {observations.q4_arsrapport}</Paragraph>
                     </Text>
                 </View>
 
                 <View style={styles.listItem}>
                     <Text style={styles.listText}>
                         <Text style={styles.bullet}>• </Text>
-                        <Text style={{ fontWeight: "bold" }}>ROI-analys:</Text>
+                        <Text style={{ fontWeight: "bold" }}>ROI-analys: </Text>
                         <Paragraph>{observations.q4_roi_analys}</Paragraph>
                     </Text>
                 </View>
@@ -653,12 +652,11 @@ const MyPDF = ({ formData, observations, favicon }) => (
                             Strategimöte och plan för nästa år:
                         </Text>
                         <Paragraph>
-                            {" "}
                             {observations.q4_strategimöte_plan}
                         </Paragraph>
                     </Text>
                 </View>
-            </View>*/}
+            </View>
 
             {/* <Text>
                 <Text style={styles.label}>Fokus:</Text> Vi mäter våra
