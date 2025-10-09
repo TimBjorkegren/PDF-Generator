@@ -751,12 +751,27 @@ export default function InformationForm() {
     const waitOnData = async () => {
         setLoading(true);
         setReadyDownload(false);
+
         await fetchScrap();
         await fetchObservations();
         await fetchFavicon();
+
         setLoading(false);
         setReadyDownload(true);
     };
+
+    //Fetch scrap info
+    async function fetchScrap() {
+        try {
+            const res = await axios.get(
+                "http://127.0.0.1:8001/api/scrape-example",
+                { params: { domainLink: formData.domainLink } }
+            );
+            setScrap(res.data); // rätt
+        } catch (error) {
+            console.error("Error scraping:", error);
+        }
+    }
 
     //Fetch OpenAI observation
     async function fetchObservations() {
@@ -764,28 +779,14 @@ export default function InformationForm() {
             "http://127.0.0.1:8001/api/generate-observations",
             {
                 domainName: formData.domainName,
+                domainLink: formData.domainLink,
+                scrapedData: scrap,
             },
             {
                 timeout: 0,
             }
         );
         setObservations(res.data.observations);
-    }
-
-    //Fetch scrap info
-    async function fetchScrap() {
-        const res = await axios.get(
-            "http://127.0.0.1:8001/api/scrape-example",
-            {
-                params: {
-                    domainLink: formData.domainLink,
-                },
-            },
-            {
-                timeout: 0,
-            }
-        );
-        setScrap(res.scrap);
     }
 
     //Fetch favicons

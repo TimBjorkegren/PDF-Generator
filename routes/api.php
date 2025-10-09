@@ -5,15 +5,43 @@ use Illuminate\Support\Facades\Route;
 use OpenAI\Laravel\Facades\OpenAI;
 use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
+use OpenAI\Client as OpenAIClient;
+use OpenAI\Factory as OpenAIFactory;
 
 
 Route::post('/generate-observations', function (Request $request) {
-    ini_set("max_execution_time", 12000);
-    set_time_limit(120);
+    set_time_limit(120); // säkerställ att PHP inte dör för tidigt
+    ini_set('max_execution_time', 120);
+
+
     $companyName = $request->input('domainName');
     $myCompanyName = "Våning 18";
+    $domainLink = $request->query("domainLink");
+     $domainLink = urldecode($domainLink);
+    $scrapedData = $request->input('scrapedData', []);
+
+    $client = new \GuzzleHttp\Client([
+    'timeout' => 90,
+    'connect_timeout' => 15,
+    ]);
+
+    $openai = (new OpenAIFactory())
+    ->withApiKey(env('OPENAI_API_KEY'))
+    ->withHttpClient($client) // 👈 här sätts din egen timeout
+    ->make();
+
+    $scrapedTextSummary = "";
+    if (!empty($scrapedData)) {
+        $scrapedTextSummary = "Här är information från deras sida:\n";
+        $scrapedTextSummary .= "Title: " . ($scrapedData['meta']['title'] ?? 'N/A') . "\n";
+        $scrapedTextSummary .= "Description: " . ($scrapedData['meta']['description'] ?? 'N/A') . "\n";
+        $scrapedTextSummary .= "H1: " . implode(', ', $scrapedData['headings']['h1'] ?? []) . "\n";
+        $scrapedTextSummary .= "H2: " . implode(', ', $scrapedData['headings']['h2'] ?? []) . "\n";
+        $scrapedTextSummary .= "Paragraphs: " . implode(' | ', $scrapedData['paragraphs'] ?? []) . "\n";
+    }
 
     $prompt = "Generera SEO-observationer för {$companyName}.
+    Använd dig utav {$scrapedTextSummary} för att besvara punkter så vi kan göra det så personligt som möjligt, markera tydligt när du använder dig utav den information så jag kan se ifall det fungerar.
     Svara i JSON-format med följande nycklar: 
     {
       \"Teknisk\": \"...\",
@@ -54,12 +82,11 @@ Route::post('/generate-observations', function (Request $request) {
     3. Under Ready skriv en personlig, varm och förtroendeingivande inbjudan där ni försöker sälja in era tjänster.  
     Använd gärna företagets namn {$companyName} och vårt företagsnamn {$myCompanyName}.  
     Avsluta med en öppen fråga som uppmuntrar till nästa steg, t.ex. boka möte.
-    4. För varje Q1, Q2, Q3, Q4 nedan, förklara varför det är viktigt och ge korta exempel, dessa är
+    4. För varje Q1, Q2, Q3, Q4 nedan, förklara varför det är viktigt, dessa är
     våra huvudaktiviteter som ingår så vi ska förklara till en kund vad som sker där, och sammanfatta det så de förstår.
-    5. Undvik att säga tex SEO-audit och teknisk analys speciellt i början av svaret.
     
     Viktigt:
-    - För alla Q2, Q3 och Q4, skriv längre, utförliga men enkla förklaringar, ungefär 4 rader om varje håll det lägre ifall det verkligen inte behövs. Du kan ge några exempel med. 
+    - För alla Q2, Q3 och Q4, skriv längre, utförliga men enkla förklaringar, skriv de gärna långa men med bra information. Du kan ge några exempel med. 
     - Undvik tekniska ord.
     - Prioritera tydlighet och värme framför korthet.
     - Undvik att skriva Q1 för långa.
@@ -94,10 +121,10 @@ Route::post('/generate-observations', function (Request $request) {
     ";
     
 
-    $response = OpenAI::chat()->create([
-        'model' => 'gpt-4o',
+    $response = $openai->chat()->create([
+        'model' => 'gpt-4.1',
         'messages' => [
-            ['role' => 'system', 'content' => 'Du är en SEO-expert.'],
+            ['role' => 'system', 'content' => 'Du är en SEO-expert. Skriv utförliga, varma och pedagogiska observationer för kunder. Följ strikt JSON-strukturen som anges i user-meddelandet.'],
             ['role' => 'user', 'content' => $prompt],
         ],
     ]);
@@ -182,59 +209,38 @@ Route::get('/favicon', function (Request $request) {
 
 
 Route::get('/scrape-example', function (Request $request) {
-    $domainLink = $request->query("domainLink");
-     $domainLink = urldecode($domainLink);
+    $domainLink = urldecode($request->query("domainLink"));
 
-    $client = new Client();
-    $response = $client->request('GET', $domainLink);
-    $html = $response->getBody();
+    $client = new Client([
+        'timeout' => 30, // max 30 sek för scraping
+        'headers' => ['User-Agent' => 'Mozilla/5.0']
+    ]);
+
+    try {
+        $response = $client->request('GET', $domainLink);
+        $html = (string) $response->getBody();
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Could not scrape page: ' . $e->getMessage()], 500);
+    }
+
     $crawler = new Crawler($html);
-    // Extract data
-    $paragraphs = $crawler->filter('p')->each(function ($node) {
-    return $node->text();
-    });
-    $h1 = $crawler->filter('h1')->each(fn($node) => $node->text());
-    $h2 = $crawler->filter('h2')->each(fn($node) => $node->text());
-    $h3 = $crawler->filter('h3')->each(fn($node) => $node->text());
 
-    // Meta-data
-    $metaTitle = $crawler->filter('title')->count() ? $crawler->filter('title')->text() : null;
-    $metaDescription = $crawler->filter('meta[name="description"]')->count() 
-    ? $crawler->filter('meta[name="description"]')->attr('content') 
-    : null;
-
-    // Länkar
-    $links = $crawler->filter('a')->each(fn($node) => [
-    'href' => $node->attr('href'),
-    'text' => $node->text()
-    ]);
-
-    // Bilder
-    $images = $crawler->filter('img')->each(fn($node) => [
-    'src' => $node->attr('src'),
-    'alt' => $node->attr('alt')
-    ]);
-
-    // CTA-knappar (exempel: <a> med klasser som innehåller "btn" eller "cta")
-    $cta = $crawler->filter('a[class*="btn"], a[class*="cta"]')->each(fn($node) => [
-    'text' => $node->text(),
-    'href' => $node->attr('href')
-        ]);
-
-    return response()->json([
+    $data = [
         'meta' => [
-                'title' => $metaTitle,
-                'description' => $metaDescription
-            ],
-            'headings' => [
-                'h1' => $h1,
-                'h2' => $h2,
-                'h3' => $h3
-            ],
-            'paragraphs' => $paragraphs,
-            'links' => $links,
-            'images' => $images,
-            'cta' => $cta
-    ]);
+            'title' => $crawler->filter('title')->count() ? $crawler->filter('title')->text() : null,
+            'description' => $crawler->filter('meta[name="description"]')->count() ? $crawler->filter('meta[name="description"]')->attr('content') : null
+        ],
+        'headings' => [
+            'h1' => $crawler->filter('h1')->each(fn($node) => $node->text()),
+            'h2' => $crawler->filter('h2')->each(fn($node) => $node->text()),
+            'h3' => $crawler->filter('h3')->each(fn($node) => $node->text()),
+        ],
+        'paragraphs' => $crawler->filter('p')->each(fn($node) => $node->text()),
+        'links' => $crawler->filter('a')->each(fn($node) => ['href' => $node->attr('href'), 'text' => $node->text()]),
+        'images' => $crawler->filter('img')->each(fn($node) => ['src' => $node->attr('src'), 'alt' => $node->attr('alt')]),
+        'cta' => $crawler->filter('a[class*="btn"], a[class*="cta"]')->each(fn($node) => ['text' => $node->text(), 'href' => $node->attr('href')]),
+    ];
+
+    return response()->json($data);
 });
 
