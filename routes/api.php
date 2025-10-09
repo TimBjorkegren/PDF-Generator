@@ -181,31 +181,60 @@ Route::get('/favicon', function (Request $request) {
 });
 
 
-Route::get('/scrape-example', function () {
+Route::get('/scrape-example', function (Request $request) {
+    $domainLink = $request->query("domainLink");
+     $domainLink = urldecode($domainLink);
+
     $client = new Client();
-    $response = $client->request('GET', 'https://www.apple.com/se/?afid=p240%7Cgo~cmp-223638154~adg-14062789354~ad-773216335362_kwd-10778630~dev-c~ext-~prd-~mca-~nt-search&cid=aos-se-kwgo-brand--');
+    $response = $client->request('GET', $domainLink);
     $html = $response->getBody();
     $crawler = new Crawler($html);
     // Extract data
     $paragraphs = $crawler->filter('p')->each(function ($node) {
     return $node->text();
     });
-    $titles = $crawler->filter('h2')->each(function ($node) {
-    return $node->text();
-    });
-    $mainTitles = $crawler->filter('h1')->each(function ($node) {
-    return $node->text();
-    });
+    $h1 = $crawler->filter('h1')->each(fn($node) => $node->text());
+    $h2 = $crawler->filter('h2')->each(fn($node) => $node->text());
+    $h3 = $crawler->filter('h3')->each(fn($node) => $node->text());
 
-    /*
-    print_r($titles);
-    print_r($paragraphs);
-    print_r($mainTitles); */
+    // Meta-data
+    $metaTitle = $crawler->filter('title')->count() ? $crawler->filter('title')->text() : null;
+    $metaDescription = $crawler->filter('meta[name="description"]')->count() 
+    ? $crawler->filter('meta[name="description"]')->attr('content') 
+    : null;
+
+    // Länkar
+    $links = $crawler->filter('a')->each(fn($node) => [
+    'href' => $node->attr('href'),
+    'text' => $node->text()
+    ]);
+
+    // Bilder
+    $images = $crawler->filter('img')->each(fn($node) => [
+    'src' => $node->attr('src'),
+    'alt' => $node->attr('alt')
+    ]);
+
+    // CTA-knappar (exempel: <a> med klasser som innehåller "btn" eller "cta")
+    $cta = $crawler->filter('a[class*="btn"], a[class*="cta"]')->each(fn($node) => [
+    'text' => $node->text(),
+    'href' => $node->attr('href')
+        ]);
 
     return response()->json([
-        'titles' => $titles,
-        'mainTitles' => $mainTitles,
-        'paragraphs' => $paragraphs
+        'meta' => [
+                'title' => $metaTitle,
+                'description' => $metaDescription
+            ],
+            'headings' => [
+                'h1' => $h1,
+                'h2' => $h2,
+                'h3' => $h3
+            ],
+            'paragraphs' => $paragraphs,
+            'links' => $links,
+            'images' => $images,
+            'cta' => $cta
     ]);
 });
 

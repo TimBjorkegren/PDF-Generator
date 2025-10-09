@@ -53,7 +53,8 @@ return [
         'api_key' => env('OPENAI_API_KEY'),
         'organization' => env('OPENAI_ORGANIZATION'),
         'client' => [
-            'timeout' => 120, // 🕒 cURL-timeout för alla requests
+            'timeout' => 300,
+            'connect_timeout' => 30,
         ],
     ],
 ];
