@@ -9,6 +9,11 @@ Route::get('/', function () {
     return inertia('Home');
 });
 
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
+
+
 /*
 Route::post('/api/generate-observations', function (Request $request) {
     $companyName = $request->input('domainName');

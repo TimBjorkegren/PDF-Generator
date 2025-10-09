@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use OpenAI\Laravel\Facades\OpenAI;
+use GuzzleHttp\Client;
+use Symfony\Component\DomCrawler\Crawler;
+
 
 Route::post('/generate-observations', function (Request $request) {
     ini_set("max_execution_time", 12000);
@@ -54,6 +57,12 @@ Route::post('/generate-observations', function (Request $request) {
     4. För varje Q1, Q2, Q3, Q4 nedan, förklara varför det är viktigt och ge korta exempel, dessa är
     våra huvudaktiviteter som ingår så vi ska förklara till en kund vad som sker där, och sammanfatta det så de förstår.
     5. Undvik att säga tex SEO-audit och teknisk analys speciellt i början av svaret.
+    
+    Viktigt:
+    - För alla Q2, Q3 och Q4, skriv längre, utförliga men enkla förklaringar, ungefär 4 rader om varje håll det lägre ifall det verkligen inte behövs. Du kan ge några exempel med. 
+    - Undvik tekniska ord.
+    - Prioritera tydlighet och värme framför korthet.
+    - Undvik att skriva Q1 för långa.
     
     
     Q1_Seo_Teknisk: SEO-audit och teknisk analys:
@@ -170,3 +179,33 @@ Route::get('/favicon', function (Request $request) {
         return response()->json(['favicon' => null]);
     }
 });
+
+
+Route::get('/scrape-example', function () {
+    $client = new Client();
+    $response = $client->request('GET', 'https://www.apple.com/se/?afid=p240%7Cgo~cmp-223638154~adg-14062789354~ad-773216335362_kwd-10778630~dev-c~ext-~prd-~mca-~nt-search&cid=aos-se-kwgo-brand--');
+    $html = $response->getBody();
+    $crawler = new Crawler($html);
+    // Extract data
+    $paragraphs = $crawler->filter('p')->each(function ($node) {
+    return $node->text();
+    });
+    $titles = $crawler->filter('h2')->each(function ($node) {
+    return $node->text();
+    });
+    $mainTitles = $crawler->filter('h1')->each(function ($node) {
+    return $node->text();
+    });
+
+    /*
+    print_r($titles);
+    print_r($paragraphs);
+    print_r($mainTitles); */
+
+    return response()->json([
+        'titles' => $titles,
+        'mainTitles' => $mainTitles,
+        'paragraphs' => $paragraphs
+    ]);
+});
+

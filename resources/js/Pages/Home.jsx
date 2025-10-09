@@ -261,6 +261,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
         {/* Strategy */}
         <Page size="A4" style={styles.page}>
             <Heading>Vår strategiska plan för 12 månader</Heading>
+
             <Paragraph>
                 Vi delar upp arbetet i fyra kvartal, vart och ett med sitt
                 fokusområde. Detta gör processen tydlig och mätbar.
@@ -273,6 +274,17 @@ const MyPDF = ({ formData, observations, favicon }) => (
                 <Text style={styles.label}>Fokus:</Text> Vi ser till att ert
                 digitala hus är stabilt och välbyggt.
             </Text>
+
+            <Image
+                src="/images/try.png"
+                style={{
+                    position: "absolute",
+                    top: 195,
+                    right: 60,
+                    width: 43, // max width
+                    height: undefined, // auto height to keep aspect ratio
+                }}
+            />
 
             <Heading style={styles.subheadings_1}>
                 Fokusområde: Analys & Strategiarbete
@@ -376,18 +388,6 @@ const MyPDF = ({ formData, observations, favicon }) => (
                 </Text>
             </View>
 
-            {/* <Text style={{ marginBottom: 8 }}>
-                • <Text style={styles.label}>Åtgärd:</Text>{" "}
-                Hastighetsoptimering. Varför? {observations.gtmeasure_1}
-            </Text>
-            <Text style={{ marginBottom: 8 }}>
-                • <Text style={styles.label}>Åtgärd:</Text> Mobilanpassning.
-                Varför? {observations.gtmeasure_2}
-            </Text>
-            <Text style={{ marginBottom: 8 }}>
-                • <Text style={styles.label}>Åtgärd:</Text>{" "}
-                Indexeringsgranskning. Varför? {observations.gtmeasure_3}
-            </Text> */}
             <Text style={styles.footer}>Våning 18 | Sida 4</Text>
         </Page>
 
@@ -398,6 +398,17 @@ const MyPDF = ({ formData, observations, favicon }) => (
             <Heading style={styles.subheadings_1}>
                 Fokusområde: Innehåll & Auktoritet
             </Heading>
+
+            <Image
+                src="/images/try2.png"
+                style={{
+                    position: "absolute",
+                    top: 50,
+                    right: 50,
+                    width: 64, // max width
+                    height: undefined, // auto height to keep aspect ratio
+                }}
+            />
 
             <View>
                 <View style={styles.listItem}>
@@ -460,30 +471,27 @@ const MyPDF = ({ formData, observations, favicon }) => (
                 </View>
             </View>
 
-            {/* <Text>
-                <Text style={styles.label}>Fokus:</Text> Vi fyller ert hus med
-                värdefullt och relevant innehåll.
-            </Text>
-            <Text>
-                • <Text style={styles.label}>Åtgärd:</Text> Sökordsanalys.
-                Varför? För att säkerställa att vi optimerar mot det folk
-                faktiskt söker efter.
-            </Text>
-            <Text>
-                • <Text style={styles.label}>Åtgärd:</Text> Optimering av
-                sidtitlar & beskrivningar. Varför? Detta är er "skylt" på Google
-                som ska locka till klick.
-            </Text> */}
-
             <View style={styles.divider} />
             <Text style={styles.footer}>Våning 18 | Sida 5</Text>
         </Page>
 
         <Page size="A4" style={styles.page}>
             <Heading>Kvartal 3: Auktoritet & förtroende</Heading>
+
             <Heading style={styles.subheadings_1}>
                 Fokusområde: Expansion & Conversion
             </Heading>
+
+            <Image
+                src="/images/try3.png"
+                style={{
+                    position: "absolute",
+                    top: 50,
+                    right: 50,
+                    width: 64, // max width
+                    height: undefined, // auto height to keep aspect ratio
+                }}
+            />
 
             <View>
                 <View style={styles.listItem}>
@@ -559,6 +567,17 @@ const MyPDF = ({ formData, observations, favicon }) => (
 
         <Page size="A4" style={styles.page}>
             <Heading>Kvartal 4: Analys & expansion</Heading>
+
+            <Image
+                src="/images/Kvartal4.png"
+                style={{
+                    position: "absolute",
+                    top: 50,
+                    right: 50,
+                    width: 64, // max width
+                    height: undefined, // auto height to keep aspect ratio
+                }}
+            />
 
             <Heading style={styles.subheadings_1}>
                 Fokusområde: Skalning & Justering
@@ -740,9 +759,12 @@ export default function InformationForm() {
     //Fetch OpenAI observation
     async function fetchObservations() {
         const res = await axios.post(
-            "http://127.0.0.1:8000/api/generate-observations",
+            "http://127.0.0.1:8001/api/generate-observations",
             {
                 domainName: formData.domainName,
+            },
+            {
+                timeout: 0,
             }
         );
         setObservations(res.data.observations);

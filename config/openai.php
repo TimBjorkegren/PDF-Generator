@@ -47,3 +47,13 @@ return [
 
     'request_timeout' => env('OPENAI_REQUEST_TIMEOUT', 30),
 ];
+
+return [
+    'default' => [
+        'api_key' => env('OPENAI_API_KEY'),
+        'organization' => env('OPENAI_ORGANIZATION'),
+        'client' => [
+            'timeout' => 120, // 🕒 cURL-timeout för alla requests
+        ],
+    ],
+];

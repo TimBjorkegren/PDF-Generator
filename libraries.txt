@@ -1,6 +1,8 @@
 OPENAI
 jsPDF
 svg2pdf.js
+Guzzle
+symfony/dom-crawler
 
 
 
