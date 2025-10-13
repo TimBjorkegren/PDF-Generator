@@ -21,7 +21,7 @@ Route::post('/generate-observations', function (Request $request) {
     $scrapedData = $request->input('scrapedData', []);
 
     $client = new \GuzzleHttp\Client([
-    'timeout' => 90,
+    'timeout' => 120,
     'connect_timeout' => 15,
     ]);
 
@@ -53,13 +53,13 @@ Route::post('/generate-observations', function (Request $request) {
       \"Q1_Konkurrent_Kpi\": \"...\",
       \"Q1_Spårning_Offpage\": \"...\",
       \"Q1_Title_Meta_Head_Url\": \"...\",
-      \"Q1_Sajtstruktur_Länkar\": \"...\",
-      \"Q1_Innehållsplan\": \"...\",
+      \"Q1_Sajt_Lankar\": \"...\",
+      \"Q1_Innehallsplan\": \"...\",
       \"Q1_Offpage\": \"...\",
       \"Q2_Publicera_Art_Guide\": \"...\",
-      \"Q2_Uppdatera_Innehåll\": \"...\",
+      \"Q2_Uppdatera_Innehall\": \"...\",
       \"Q2_Bygga_Authority\": \"...\",
-      \"Q2_Länkstrategi_Outreach\": \"...\",
+      \"Q2_Lankstrategi_Outreach\": \"...\",
       \"Q2_Offpage\": \"...\",
       \"Q3_Nya_Landningssidor\": \"...\",
       \"Q3_Lokal_Seo\": \"...\",
@@ -84,6 +84,7 @@ Route::post('/generate-observations', function (Request $request) {
     Avsluta med en öppen fråga som uppmuntrar till nästa steg, t.ex. boka möte.
     4. För varje Q1, Q2, Q3, Q4 nedan, förklara varför det är viktigt, dessa är
     våra huvudaktiviteter som ingår så vi ska förklara till en kund vad som sker där, och sammanfatta det så de förstår.
+    5. Ge endast råd och förslag som är realistiska och genomförbara av Våning 18. Undvik att lova eller antyda åtgärder som vi inte kommer att utföra.
     
     Viktigt:
     - För alla Q2, Q3 och Q4, skriv längre, utförliga men enkla förklaringar, skriv de gärna långa men med bra information. Du kan ge några exempel med. 
@@ -97,13 +98,13 @@ Route::post('/generate-observations', function (Request $request) {
     Q1_Konkurrent_Kpi: Kokurrentanalys och KPI-sättning:
     Q1_Spårning_Offpage: spårning (GA4/GSC) och Offpage:
     Q1_Title_Meta_Head_Url: Optimera titlar, metabeskrivningar, headings och URL-struktur:
-    Q1_Sajtstruktur_Länkar: Skapa sajtstruktur och interna länkar:
-    Q1_Innehållsplan: Innehållsplan för 12 mån:
+    Q1_Sajt_Lankar: Skapa sajtstruktur och interna länkar:
+    Q1_Innehallsplan: Innehållsplan för 12 mån:
     Q1_Offpage: Offpage: 
     Q2_Publicera_Art_Guide: Publicera artiklar/guider:
-    Q2_Uppdatera_Innehåll: Uppdatera befintligt innehåll:
+    Q2_Uppdatera_Innehall: Uppdatera befintligt innehåll:
     Q2_Bygga_Authority: Bygga topical authority:
-    Q2_Länkstrategi_Outreach: Starta länkstrategi och outreach
+    Q2_Lankstrategi_Outreach: Starta länkstrategi och outreach
     Q2_Offpage: Offpage:
     Q3_Nya_Landningssidor: Nya landningssidor:
     Q3_Lokal_Seo: lokal SEO (om relevant):
@@ -148,13 +149,13 @@ Route::post('/generate-observations', function (Request $request) {
         'q1_konkurrent_kpi' => '',
         'q1_spårning_offpage' => '',
         'q1_title_meta_head_url' => '',
-        'q1_sajtstruktur_länkar' => '',
-        'q1_innehållsplan' => '',
+        'q1_sajt_lankar' => '',
+        'q1_innehallsplan' => '',
         'q1_offpage' => '',
         'q2_publicera_art_guide' => '',
-        'q2_uppdatera_innehåll' => '',
+        'q2_uppdatera_innehall' => '',
         'q2_bygga_authority' => '',
-        'q2_länkstrategi_outreach' => '',
+        'q2_lankstrategi_outreach' => '',
         'q2_offpage' => '',
         'q3_nya_landningssidor' => '',
         'q3_lokal_seo' => '',

@@ -11,7 +11,9 @@ import {
     PDFDownloadLink,
     Image,
     PDFViewer,
+    pdf,
 } from "@react-pdf/renderer";
+import html2pdf from "html2pdf.js";
 
 /*
 import { saveAs } from "file-saver";
@@ -253,11 +255,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
 
             <Text style={styles.footer}>Våning 18 | Sida 3</Text>
         </Page>
-        {/* En snabb sida ger bättre användarupplevelse och rankas högre.
-                
-            Majoriteten av sökningar sker idag via mobilen.
 
-            Om Google inte kan se en sida, kan den inte synas.    */}
         {/* Strategy */}
         <Page size="A4" style={styles.page}>
             <Heading>Vår strategiska plan för 12 månader</Heading>
@@ -376,7 +374,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                     <Text style={{ fontWeight: "bold" }}>
                         Innehållsplan för 12 månader:
                     </Text>
-                    <Paragraph> {observations.q1_innehållsplan}</Paragraph>
+                    <Paragraph> {observations.q1_innehallsplan}</Paragraph>
                 </Text>
             </View>
 
@@ -431,7 +429,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                             Uppdatera befintligt innehåll:
                         </Text>
                         <Paragraph>
-                            {observations.q2_uppdatera_innehåll}
+                            {observations.q2_uppdatera_innehall}
                         </Paragraph>
                     </Text>
                 </View>
@@ -457,7 +455,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                         </Text>
                         <Paragraph>
                             {" "}
-                            {observations.q2_länkstrategi_outreach}
+                            {observations.q2_lankstrategi_outreach}
                         </Paragraph>
                     </Text>
                 </View>
@@ -546,20 +544,6 @@ const MyPDF = ({ formData, observations, favicon }) => (
                     </Text>
                 </View>
             </View>
-            {/* <Text>
-                <Text style={styles.label}>Fokus:</Text> Vi gör er till det
-                självklara valet i er bransch.
-            </Text>
-            <Text>
-                • <Text style={styles.label}>Åtgärd:</Text> Google Business
-                Profile. Varför? Kritiskt för att synas i kart-sök och för
-                kunder i ert närområde.
-            </Text>
-            <Text>
-                • <Text style={styles.label}>Åtgärd:</Text> Länkstrategi.
-                Varför? Länkar är en av de starkaste signalerna till Google att
-                er sida är en auktoritet.
-            </Text> */}
 
             <View style={styles.divider} />
             <Text style={styles.footer}>Våning 18 | Sida 6</Text>
@@ -677,21 +661,6 @@ const MyPDF = ({ formData, observations, favicon }) => (
                 </View>
             </View>
 
-            {/* <Text>
-                <Text style={styles.label}>Fokus:</Text> Vi mäter våra
-                framgångar och planerar för fortsatt tillväxt.
-            </Text>
-            <Text>
-                • <Text style={styles.label}>Åtgärd:</Text> Resultatanalys &
-                rapportering. Varför? För att bevisa att strategin fungerar och
-                hitta nya möjligheter.
-            </Text>
-            <Text>
-                • <Text style={styles.label}>Åtgärd:</Text> Planering för nästa
-                år. Varför? SEO är en ständigt pågående process, inte en
-                engångsinsats.
-            </Text> */}
-
             <Text style={styles.footer}>Våning 18 | Sida 7</Text>
         </Page>
 
@@ -798,6 +767,23 @@ export default function InformationForm() {
         setFavicon(data.favicon);
     }
 
+    const handleDownloadPDF = async () => {
+        // Use the current React state, which has the latest content
+        const blob = await pdf(
+            <MyPDF
+                formData={formData}
+                observations={observations}
+                favicon={favicon}
+            />
+        ).toBlob();
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${formData.domainName || "report"}.pdf`;
+        link.click();
+    };
+
     //Display layout of generating PDF file generator
     return (
         <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900 p-8 space-y-6">
@@ -834,100 +820,996 @@ export default function InformationForm() {
                     >
                         {loading ? "Preparing..." : "Prepare Data"}
                     </button>
-
-                    {readyDownload && (
-                        <>
-                            <label>
-                                Teknisk SEO Observation (AI Generated)
-                            </label>
-                            <textarea
-                                placeholder="Edit Teknisk SEO observation..."
-                                value={observations.teknisk}
-                                onChange={(e) =>
-                                    setObservations({
-                                        ...observations,
-                                        teknisk: e.target.value,
-                                    })
-                                }
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                            />
-
-                            <label>
-                                On-Page SEO Observation (AI Generated)
-                            </label>
-                            <textarea
-                                placeholder="Edit On-Page SEO observation..."
-                                value={observations.onpage}
-                                onChange={(e) =>
-                                    setObservations({
-                                        ...observations,
-                                        onpage: e.target.value,
-                                    })
-                                }
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                            />
-
-                            <label>
-                                Off-Page SEO Observation (AI Generated)
-                            </label>
-                            <textarea
-                                placeholder="Edit Off-Page SEO observation..."
-                                value={observations.offpage}
-                                onChange={(e) =>
-                                    setObservations({
-                                        ...observations,
-                                        offpage: e.target.value,
-                                    })
-                                }
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                            />
-
-                            <label>Avsluts Meddelande (AI Generated)</label>
-                            <textarea
-                                placeholder="Edit Wrap-Up / Next Step"
-                                value={observations.ready}
-                                onChange={(e) =>
-                                    setObservations({
-                                        ...observations,
-                                        ready: e.target.value,
-                                    })
-                                }
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                            />
-                        </>
-                    )}
                 </div>
 
-                {/* Right Column - PDF Preview and Downloads */}
+                {/* Right Column - Editable HTML Preview */}
                 {readyDownload && (
                     <div className="flex flex-col flex-1 space-y-4">
-                        <div className="border rounded-lg overflow-hidden shadow-md">
-                            <PDFViewer
-                                style={{ width: "100%", height: "80vh" }}
+                        <div
+                            id="pdf-preview"
+                            className="w-full min-h-[80vh] bg-white shadow-lg p-12 border border-gray-300 overflow-auto"
+                            style={{
+                                fontFamily: "Helvetica, Arial, sans-serif",
+                            }}
+                        >
+                            {/* Förstasidan */}
+                            <h1
+                                className="text-2xl font-bold text-center mb-4"
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        title: e.currentTarget.textContent,
+                                    })
+                                }
                             >
-                                <MyPDF
-                                    formData={formData}
-                                    observations={observations}
-                                    favicon={favicon}
+                                {formData.title ||
+                                    "Förslag på SEO-strategi & Årsplan"}
+                            </h1>
+
+                            {favicon && (
+                                <img
+                                    src={favicon}
+                                    style={{
+                                        width: 64,
+                                        height: 64,
+                                        display: "block",
+                                        margin: "0 auto",
+                                    }}
                                 />
-                            </PDFViewer>
+                            )}
+
+                            <p
+                                className="text-center mb-8"
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        domainIntro:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Hej {formData.domainName}! Låt oss växa
+                                tillsammans.
+                            </p>
+
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        intro1: e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Tack för att ni överväger oss som er
+                                SEO-partner. I dagens digitala landskap är en
+                                stark närvaro på Google inte bara en fördel –
+                                det är en nödvändighet. När era potentiella
+                                kunder söker efter de tjänster eller produkter
+                                ni erbjuder, vill vi se till att det är er de
+                                hittar.
+                            </p>
+
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                style={{ textAlign: "center" }}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        intro2: e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                SEO (sökmotoroptimering) handlar om att göra er
+                                hemsida, {formData.domainName}, så relevant och
+                                användarvänlig som möjligt, både för besökare
+                                och för sökmotorer som Google. Det är en
+                                långsiktig investering som bygger förtroende och
+                                skapar en stadig ström av relevanta besökare –
+                                de som aktivt letar efter det ni gör bäst.
+                            </p>
+
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        intro3: e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Denna plan är ett första utkast som belyser de
+                                områden vi ser störst potential i. Den ger en
+                                tydlig vägkarta för hur vi kan arbeta
+                                tillsammans under det kommande året för att nå
+                                era mål.
+                            </p>
+
+                            <hr className="my-6" />
+
+                            {/* Analys */}
+                            <h2
+                                className="text-xl font-semibold mt-6"
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        heading_analysis:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Var står vi idag? En första överblick
+                            </h2>
+
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        analysis_intro:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                För att veta vart vi ska, måste vi veta var vi
+                                börjar. Vår första analys ger oss insikter inom
+                                tre viktiga områden:
+                            </p>
+
+                            {/* Teknisk SEO */}
+                            <h3
+                                className="text-lg font-semibold mt-4"
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        heading_teknisk:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                1. Teknisk SEO (hemsidans hälsa)
+                            </h3>
+                            <strong
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        teknisk_vad:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Vad det är:
+                            </strong>
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        teknisk_desc:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Grunden för allt. Det handlar om sidans
+                                hastighet, mobilvänlighet och struktur. Om
+                                Google inte kan läsa er sida spelar resten
+                                mindre roll.
+                            </p>
+                            <strong
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        teknisk_obs_label:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Vår observation:
+                            </strong>
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        teknisk: e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                {observations.teknisk || "Ingen data"}
+                            </p>
+
+                            {/* On-Page SEO */}
+                            <h3
+                                className="text-lg font-semibold mt-4"
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        heading_onpage:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                2. On-Page SEO (innehållets relevans)
+                            </h3>
+                            <strong
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        onpage_vad: e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Vad det är:
+                            </strong>
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        onpage_desc:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Hur väl innehållet på era sidor (texter,
+                                rubriker, bilder) matchar det era kunder söker
+                                efter.
+                            </p>
+                            <strong
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        onpage_obs_label:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Vår observation:
+                            </strong>
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        onpage: e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                {observations.onpage || "Ingen data"}
+                            </p>
+
+                            {/* Off-Page SEO */}
+                            <h3
+                                className="text-lg font-semibold mt-4"
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        heading_offpage:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                3. Off-Page SEO (auktoritet & förtroende)
+                            </h3>
+                            <strong
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        offpage_vad:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Vad det är:
+                            </strong>
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        offpage_desc:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Hur andra på internet ser på er sida. Länkar
+                                från andra relevanta hemsidor fungerar som
+                                rekommendationer och bygger er auktoritet.
+                            </p>
+                            <strong
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        offpage_obs_label:
+                                            e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                Vår observation:
+                            </strong>
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        offpage: e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                {observations.offpage || "Ingen data"}
+                            </p>
+
+                            <hr className="my-6" />
+
+                            {/* Strategiska kvartal */}
+                            {/* Kvartal 1 */}
+                            <h2
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        heading_q1: e.currentTarget.textContent,
+                                    })
+                                }
+                                className="mb-6"
+                            >
+                                <strong>
+                                    Kvartal 1: Grunden – Teknisk excellens
+                                </strong>
+                            </h2>
+
+                            <h3 className="mb-2">
+                                <strong>
+                                    Fokusområde: Analys & Strategiarbete
+                                </strong>
+                            </h3>
+                            <ul className="ml-6 mb-6 space-y-2">
+                                <li>
+                                    <strong>SEO-audit & teknisk analys:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q1_seo_teknisk:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q1_seo_teknisk ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>
+                                        Nyckelordsanalys & Åtgärdplan:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q1_nyckelord_atgard:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q1_nyckelord_atgard ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>
+                                        Konkurrentanalys & KPI-sättning:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q1_konkurrent_kpi:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q1_konkurrent_kpi ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>
+                                        Spårning (GA4/GSC) & Offpage-insikter:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q1_spårning_offpage:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q1_spårning_offpage ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                            </ul>
+
+                            <h3 className="mb-2">
+                                <strong>Fokusområde: On-page & Struktur</strong>
+                            </h3>
+                            <ul className="ml-6 mb-8 space-y-2">
+                                <li>
+                                    <strong>
+                                        Optimera titlar, metabeskrivningar,
+                                        headings, URL-struktur:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q1_title_meta_head_url:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q1_title_meta_head_url ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>
+                                        Skapa sajtstruktur & interna länkar:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q1_sajt_lankar:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q1_sajt_lankar ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>
+                                        Innehållsplan för 12 månader:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q1_innehallsplan:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q1_innehallsplan ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>Offpage:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q1_offpage:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q1_offpage ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                            </ul>
+
+                            {/* Kvartal 2 */}
+                            <h2
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        heading_q2: e.currentTarget.textContent,
+                                    })
+                                }
+                                className="mb-6"
+                            >
+                                <strong>Kvartal 2: Innehåll & relevans</strong>
+                            </h2>
+
+                            <h3 className="mb-2">
+                                <strong>
+                                    Fokusområde: Innehåll & Auktoritet
+                                </strong>
+                            </h3>
+                            <ul className="ml-6 mb-6 space-y-2">
+                                <li>
+                                    <strong>Publicera artiklar/guider:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q2_publicera_art_guide:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q2_publicera_art_guide ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>
+                                        Uppdatera befintligt innehåll:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q2_uppdatera_innehall:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q2_uppdatera_innehall ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>Bygga topical authority:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q2_bygga_authority:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q2_bygga_authority ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>
+                                        Starta länkstrategi & outreach:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q2_lankstrategi_outreach:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q2_lankstrategi_outreach ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>Offpage:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q2_offpage:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q2_offpage ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                            </ul>
+
+                            {/* Kvartal 3 */}
+                            <h2
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        heading_q3: e.currentTarget.textContent,
+                                    })
+                                }
+                                className="mb-6"
+                            >
+                                <strong>
+                                    Kvartal 3: Auktoritet & förtroende
+                                </strong>
+                            </h2>
+
+                            <h3 className="mb-2">
+                                <strong>
+                                    Fokusområde: Expansion & Conversion
+                                </strong>
+                            </h3>
+                            <ul className="ml-6 mb-6 space-y-2">
+                                <li>
+                                    <strong>Nya landningssidor:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q3_nya_landningssidor:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q3_nya_landningssidor ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>Lokal SEO om relevant:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q3_lokal_seo:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q3_lokal_seo ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>CRO A/B, UX:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q3_cro: e.currentTarget
+                                                    .textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q3_cro || "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>
+                                        Schema markup & rich results:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q3_schema_markup_rich_results:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q3_schema_markup_rich_results ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>Offpage:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q3_offpage:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q3_offpage ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                            </ul>
+
+                            {/* Kvartal 4 */}
+                            <h2
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        heading_q4: e.currentTarget.textContent,
+                                    })
+                                }
+                                className="mb-6"
+                            >
+                                <strong>Kvartal 4: Analys & expansion</strong>
+                            </h2>
+
+                            <h3 className="mb-2">
+                                <strong>
+                                    Fokusområde: Skalning & Justering
+                                </strong>
+                            </h3>
+                            <ul className="ml-6 mb-6 space-y-2">
+                                <li>
+                                    <strong>
+                                        Utvärdera rankingar & trafik:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q4_utvärdera_rankingar_trafik:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q4_utvärdera_rankingar_trafik ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>Skapa avancerat innehåll:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q4_skapa_avancerat_innehåll:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q4_skapa_avancerat_innehåll ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>Bygga starkare länkar:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q4_bygga_starkare_länkar:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q4_bygga_starkare_länkar ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>
+                                        Eventuellt utbildning för kund:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q4_utbildning_kund:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q4_utbildning_kund ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>Offpage:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q4_offpage:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q4_offpage ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                            </ul>
+
+                            <h3 className="mb-2">
+                                <strong>
+                                    Fokusområde: Utvärdering & Nästa steg
+                                </strong>
+                            </h3>
+                            <ul className="ml-6 mb-6 space-y-2">
+                                <li>
+                                    <strong>
+                                        Årsrapport med resultat mot KPI:er:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q4_arsrapport:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q4_arsrapport ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>ROI-analys:</strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q4_roi_analys:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q4_roi_analys ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong>
+                                        Strategimöte och plan för nästa år:
+                                    </strong>{" "}
+                                    <span
+                                        contentEditable
+                                        suppressContentEditableWarning={true}
+                                        onBlur={(e) =>
+                                            setObservations({
+                                                ...observations,
+                                                q4_strategimöte_plan:
+                                                    e.currentTarget.textContent,
+                                            })
+                                        }
+                                        className="ml-1"
+                                    >
+                                        {observations.q4_strategimöte_plan ||
+                                            "Ingen data"}
+                                    </span>
+                                </li>
+                            </ul>
+
+                            {/* Avslutning */}
+                            <h2 className="text-xl font-semibold mt-6">
+                                Rapportering och nästa steg
+                            </h2>
+
+                            <p
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onBlur={(e) =>
+                                    setObservations({
+                                        ...observations,
+                                        ready: e.currentTarget.textContent,
+                                    })
+                                }
+                            >
+                                {observations.ready || "Ingen data"}
+                            </p>
+
+                            <p>Med vänliga hälsningar,</p>
+                            <p>Våning 18</p>
+                            <p>epost@dinsida.se</p>
+                            <p>070-123 45 67</p>
                         </div>
 
-                        <PDFDownloadLink
-                            document={
-                                <MyPDF
-                                    formData={formData}
-                                    observations={observations}
-                                    favicon={favicon}
-                                />
-                            }
-                            fileName={`${formData.domainName || "report"}.pdf`}
+                        <button
+                            onClick={handleDownloadPDF}
                             className="px-4 py-2 bg-red-500 text-white rounded-lg text-center hover:bg-red-600 transition"
                         >
-                            {({ loading }) =>
-                                loading ? "Generating PDF..." : "Download PDF"
-                            }
-                        </PDFDownloadLink>
+                            Download PDF
+                        </button>
                     </div>
                 )}
             </div>
