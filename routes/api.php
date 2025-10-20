@@ -87,7 +87,7 @@ Route::post('/generate-observations', function (Request $request) {
     5. Ge endast råd och förslag som är realistiska och genomförbara av Våning 18. Undvik att lova eller antyda åtgärder som vi inte kommer att utföra.
     
     Viktigt:
-    - För alla Q2, Q3 och Q4, skriv längre, utförliga men enkla förklaringar, skriv de gärna långa men med bra information. Du kan ge några exempel med. 
+    - För alla Q2, Q3 och Q4, utförliga men enkla förklaringar, skriv de gärna korta men med bra information.
     - Undvik tekniska ord.
     - Prioritera tydlighet och värme framför korthet.
     - Undvik att skriva Q1 för långa.

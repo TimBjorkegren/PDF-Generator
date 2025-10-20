@@ -14,6 +14,7 @@ import {
     pdf,
 } from "@react-pdf/renderer";
 import html2pdf from "html2pdf.js";
+import PptxGenJS from "pptxgenjs";
 
 /*
 import { saveAs } from "file-saver";
@@ -52,11 +53,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "bold",
         marginTop: 14,
-        marginBottom: 8,
+        marginBottom: 14,
     },
     paragraph: {
         fontSize: 12,
-        marginBottom: 8,
+        marginBottom: 13,
         lineHeight: 1.5,
         textAlign: "left",
     },
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     },
     listItem: {
         fontSize: 12,
-        marginBottom: 4,
+        marginBottom: 8,
         flexDirection: "row",
     },
 });
@@ -158,6 +159,650 @@ const Heading = ({ children, style }) => (
 const CenteredTitle = ({ children }) => (
     <Text style={styles.centeredTitle}>{children}</Text>
 );
+
+const createPPT = ({ formData, observations, favicon }) => {
+    const pptx = new PptxGenJS();
+
+    // --- Page 1: Cover ---
+    const cover = pptx.addSlide();
+
+    cover.addImage({
+        path: `${window.location.origin}/images/Bild1.png`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+
+    cover.addText("Förslag på SEO-strategi & Årsplan", {
+        x: 1,
+        y: 1,
+        fontSize: 28,
+        bold: true,
+        color: "FFFFFF",
+    });
+
+    if (favicon) {
+        cover.addImage({ data: favicon, x: 7, y: 0.5, w: 1, h: 1 });
+    }
+    cover.addText(`Hej ${formData.domainName}! Låt oss växa tillsammans.`, {
+        x: 1,
+        y: 1.5,
+        fontSize: 16,
+        color: "FFFFFF",
+    });
+    cover.addText(
+        `Tack för att ni överväger oss som er SEO-partner. I dagens digitala landskap är en stark närvaro på Google inte bara en fördel – det är en nödvändighet. När era potentiella kunder söker efter de tjänster eller produkter ni erbjuder, vill vi se till att det är er de hittar.
+
+SEO (sökmotoroptimering) handlar om att göra er hemsida, ${formData.domainName}, så relevant och användarvänlig som möjligt, både för besökare och för sökmotorer som Google. Det är en långsiktig investering som bygger förtroende och skapar en stadig ström av relevanta besökare – de som aktivt letar efter det ni gör bäst.
+
+Denna plan är ett första utkast som belyser de områden vi ser störst potential i. Den ger en tydlig vägkarta för hur vi kan arbeta tillsammans under det kommande året för att nå era mål.`,
+        {
+            x: 1,
+            y: 3.5,
+            fontSize: 14,
+            color: "FFFFFF",
+            lineSpacingMultiple: 1.2,
+        }
+    );
+
+    // --- Page 2: Analys ---
+    const slide2 = pptx.addSlide();
+
+    slide2.addImage({
+        path: `${window.location.origin}/images/bakgrund_2.jpg`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+
+    slide2.addText("Var står vi idag? En första överblick", {
+        x: 0.5,
+        y: 0.4,
+        fontSize: 22,
+        bold: true,
+        w: 9,
+        h: 0.8,
+    });
+
+    slide2.addText(
+        `För att veta vart vi ska, måste vi veta var vi börjar. Vår första analys ger oss insikter inom tre viktiga områden:`,
+        { x: 0.5, y: 1.3, fontSize: 14, w: 4.5 }
+    );
+
+    slide2.addText(
+        `1. Teknisk SEO (hemsidans hälsa)
+Vad det är: Grunden för allt. Det handlar om sidans hastighet, mobilvänlighet och struktur. Om Google inte kan läsa er sida spelar resten mindre roll.
+
+Vår observation: ${observations.teknisk || "Ingen data"}`,
+        { x: 0.5, y: 3.4, fontSize: 14, lineSpacingMultiple: 1.1, w: 4.5 }
+    );
+
+    // --- Page 2b: Analys ---
+    const slide2b = pptx.addSlide();
+
+    slide2b.addImage({
+        path: `${window.location.origin}/images/bakgrund_2.jpg`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+
+    slide2b.addText("Var står vi idag? En första överblick", {
+        x: 0.5,
+        y: 0.5,
+        fontSize: 22,
+        bold: true,
+        w: 9,
+        h: 0.8,
+    });
+
+    slide2b.addText(
+        `
+2. On-Page SEO (innehållets relevans)
+
+Vad det är: Hur väl innehållet på era sidor (texter, rubriker, bilder) matchar det era kunder söker efter.
+
+Vår observation: ${observations.onpage || "Ingen data"}`,
+        { x: 0.5, y: 2.5, fontSize: 14, lineSpacingMultiple: 1.1, w: 4.5 }
+    );
+
+    // --- Page 2c: Analys ---
+    const slide2c = pptx.addSlide();
+
+    slide2c.addImage({
+        path: `${window.location.origin}/images/bakgrund_2.jpg`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+
+    slide2c.addText("Var står vi idag? En första överblick", {
+        x: 0.5,
+        y: 0.5,
+        fontSize: 22,
+        bold: true,
+        w: 9,
+        h: 0.8,
+    });
+
+    slide2c.addText(
+        `
+3. Off-Page SEO (auktoritet & förtroende)
+
+Vad det är: Hur andra på internet ser på er sida. Länkar från andra relevanta hemsidor fungerar som rekommendationer och bygger er auktoritet.
+
+Vår observation: ${observations.offpage || "Ingen data"}`,
+        { x: 0.5, y: 2.5, fontSize: 14, lineSpacingMultiple: 1.1, w: 4.5 }
+    );
+
+    // --- Page 3a: Kvartal 1 - Analys & Strategiarbete ---
+    const slide3_intro = pptx.addSlide();
+
+    slide3_intro.addImage({
+        path: `${window.location.origin}/images/plan2.png`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+
+    slide3_intro.addText(`Vår strategiska plan för 12 månader. `, {
+        x: 0.5,
+        y: 1.1,
+        fontSize: 20,
+        bold: true,
+        w: 9,
+        color: "FFFFFF",
+    });
+
+    slide3_intro.addText(
+        `Vi delar upp arbetet i fyra kvartal, vart och ett med sitt fokusområde. 
+Detta gör processen tydlig och mätbar`,
+        {
+            x: 0.5,
+            y: 1.6,
+            fontSize: 13,
+            bold: true,
+            w: 9,
+            color: "FFFFFF",
+        }
+    );
+
+    slide3_intro.addText(
+        [
+            {
+                text: "Kvartal 1: Grunden – Teknisk excellens\n\n",
+                options: { color: "b5eddc", bold: true },
+            },
+            {
+                text: "Kvartal 2: Innehåll & relevans\n\n",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: "Kvartal 3: Auktoritet & förtroende\n\n",
+                options: { color: "559192", bold: true },
+            },
+            {
+                text: "Kvartal 4: Analys & expansion\n\n",
+                options: { color: "90d1bf", bold: true },
+            },
+        ],
+        {
+            x: 0.5,
+            y: 3.5,
+            fontSize: 13,
+            lineSpacingMultiple: 1.2,
+            w: 9,
+        }
+    );
+
+    // --- Page 3a: Kvartal 1 - Analys & Strategiarbete ---
+    const slide3a = pptx.addSlide();
+    slide3a.addImage({
+        path: `${window.location.origin}/images/kvarV4.png`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+    slide3a.addText(
+        [
+            { text: "Kvartal 1", options: { color: "69b898", bold: true } },
+            {
+                text: ": Grunden – Teknisk excellens",
+                options: { color: "000000", bold: true },
+            },
+        ],
+        {
+            x: 0.5,
+            y: 1,
+            fontSize: 22,
+            bold: true,
+        }
+    );
+    slide3a.addText(
+        [
+            {
+                text: "Fokusområde: Analys & Strategiarbete:\n\n",
+                options: { color: "000000", bold: true },
+            },
+            {
+                text: "• SEO-audit & teknisk analys: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q1_seo_teknisk}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Nyckelordsanalys & Åtgärdplan: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q1_nyckelord_atgard}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Konkurrentanalys & KPI-sättning: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q1_konkurrent_kpi}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Spårning (GA4/GSC) & Offpage-insikter: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q1_spårning_offpage}`,
+                options: { color: "000000" },
+            },
+        ],
+        { x: 0.5, y: 3.2, fontSize: 13, lineSpacingMultiple: 1.3, w: 9 }
+    );
+
+    // --- Page 3b: Kvartal 1 - On-page & Struktur ---
+    const slide3b = pptx.addSlide();
+    slide3b.addImage({
+        path: `${window.location.origin}/images/kvarV4.png`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+    slide3b.addText(
+        [
+            { text: "Kvartal 1", options: { color: "69b898", bold: true } },
+            {
+                text: ": Grunden – Teknisk excellens",
+                options: { color: "000000", bold: true },
+            },
+        ],
+        {
+            x: 0.5,
+            y: 1,
+            fontSize: 22,
+            bold: true,
+        }
+    );
+    slide3b.addText(
+        [
+            {
+                text: "Fokusområde: On-page & Struktur:\n\n",
+                options: { color: "000000", bold: true },
+            },
+            {
+                text: "• Optimera titlar, metabeskrivningar, headings, URL-struktur: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q1_title_meta_head_url}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Skapa sajtstruktur & interna länkar: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q1_title_meta_head_url}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Innehållsplan för 12 månader: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q1_innehallsplan}\n`,
+                options: { color: "000000" },
+            },
+            { text: "• Offpage: ", options: { color: "69b898", bold: true } },
+            {
+                text: `${observations.q1_offpage}`,
+                options: { color: "000000" },
+            },
+        ],
+        { x: 0.5, y: 3, fontSize: 13, lineSpacingMultiple: 1.3, w: 9 }
+    );
+
+    // --- Page 4: Kvartal 2 ---
+    const slide4 = pptx.addSlide();
+    slide4.addImage({
+        path: `${window.location.origin}/images/kvarV3.png`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+    slide4.addText(
+        [
+            { text: "Kvartal 2", options: { color: "69b898", bold: true } },
+            {
+                text: ": Innehåll & relevans",
+                options: { color: "000000", bold: true },
+            },
+        ],
+        {
+            x: 0.5,
+            y: 1,
+            fontSize: 22,
+            bold: true,
+        }
+    );
+    slide4.addText(
+        [
+            {
+                text: "Fokusområde: Innehåll & Auktoritet:\n\n",
+                options: { color: "000000", bold: true },
+            },
+            {
+                text: "• Publicera artiklar/guider: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q2_publicera_art_guide}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Uppdatera befintligt innehåll: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q2_uppdatera_innehall}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Bygga topical authority: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q2_bygga_authority}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Starta länkstrategi & outreach: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q2_lankstrategi_outreach}\n`,
+                options: { color: "000000" },
+            },
+            { text: "• Offpage: ", options: { color: "69b898", bold: true } },
+            {
+                text: `${observations.q2_offpage}`,
+                options: { color: "000000" },
+            },
+        ],
+        { x: 0.5, y: 3, fontSize: 13, lineSpacingMultiple: 1.3, w: 9 }
+    );
+
+    // --- Page 5: Kvartal 3 ---
+    const slide5 = pptx.addSlide();
+    slide5.addImage({
+        path: `${window.location.origin}/images/kvarV2.png`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+    slide5.addText(
+        [
+            { text: "Kvartal 3", options: { color: "69b898", bold: true } },
+            {
+                text: ": Auktoritet & förtroende",
+                options: { color: "000000", bold: true },
+            },
+        ],
+        {
+            x: 0.5,
+            y: 1,
+            fontSize: 22,
+            bold: true,
+        }
+    );
+
+    slide5.addText(
+        [
+            {
+                text: "Fokusområde: Expansion & Conversion:\n\n",
+                options: { color: "000000", bold: true },
+            },
+            {
+                text: "• Nya landningssidor: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q3_nya_landningssidor}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Lokal SEO om relevant: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q3_lokal_seo}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• CRO A/B, UX: ",
+                options: { color: "69b898", bold: true },
+            },
+            { text: `${observations.q3_cro}\n`, options: { color: "FFFFFF" } },
+            {
+                text: "• Schema markup & rich results: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q3_schema_markup_rich_results}\n`,
+                options: { color: "000000" },
+            },
+            { text: "• Offpage: ", options: { color: "69b898", bold: true } },
+            {
+                text: `${observations.q3_offpage}`,
+                options: { color: "000000" },
+            },
+        ],
+        { x: 0.5, y: 3, fontSize: 13, lineSpacingMultiple: 1.3, w: 9 }
+    );
+
+    // --- Page 6: Kvartal 4 ---
+    const slide6 = pptx.addSlide();
+    slide6.addImage({
+        path: `${window.location.origin}/images/kvarV1.png`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+
+    slide6.addText(
+        [
+            { text: "Kvartal 4", options: { color: "69b898", bold: true } },
+            {
+                text: ": Analys & expansion",
+                options: { color: "000000", bold: true },
+            },
+        ],
+        {
+            x: 0.5,
+            y: 1,
+            fontSize: 22,
+            bold: true,
+        }
+    );
+
+    slide6.addText(
+        [
+            {
+                text: "Fokusområde: Skalning & Justering:\n\n",
+                options: { color: "000000", bold: true },
+            },
+            {
+                text: "• Utvärdera rankingar & trafik: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q4_utvärdera_rankingar_trafik}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Skapa avancerat innehåll: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q4_skapa_avancerat_innehåll}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Bygga starkare länkar: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q4_bygga_starkare_länkar}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Eventuellt utbildning för kund: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q4_utbildning_kund}\n`,
+                options: { color: "000000" },
+            },
+            { text: "• Offpage: ", options: { color: "69b898", bold: true } },
+            {
+                text: `${observations.q4_offpage}`,
+                options: { color: "000000" },
+            },
+        ],
+        { x: 0.5, y: 3, fontSize: 13, lineSpacingMultiple: 1.3, w: 9 }
+    );
+
+    // --- Page 6b: Kvartal 4 - Utvärdering ---
+    const slide6b = pptx.addSlide();
+    slide6b.addImage({
+        path: `${window.location.origin}/images/kvarV1.png`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+    slide6b.addText(
+        [
+            { text: "Kvartal 4", options: { color: "69b898", bold: true } },
+            {
+                text: ": Analys & expansion",
+                options: { color: "000000", bold: true },
+            },
+        ],
+        {
+            x: 0.5,
+            y: 1,
+            fontSize: 22,
+            bold: true,
+        }
+    );
+
+    slide6b.addText(
+        [
+            {
+                text: "Fokusområde: Utvärdering & Nästa steg:\n\n",
+                options: { color: "000000", bold: true },
+            },
+            {
+                text: "• Årsrapport med resultat mot KPI:er: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q4_arsrapport}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• ROI-analys: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q4_roi_analys}\n`,
+                options: { color: "000000" },
+            },
+            {
+                text: "• Strategimöte och plan för nästa år: ",
+                options: { color: "69b898", bold: true },
+            },
+            {
+                text: `${observations.q4_strategimöte_plan}`,
+                options: { color: "000000" },
+            },
+        ],
+        { x: 0.5, y: 3, fontSize: 13, lineSpacingMultiple: 1.3, w: 9 }
+    );
+
+    // --- Page 7: Closing ---
+    const slide7 = pptx.addSlide();
+
+    slide7.addImage({
+        path: `${window.location.origin}/images/end1.png`,
+        x: 0,
+        y: 0,
+        w: pptx.presLayout.width,
+        h: pptx.presLayout.height,
+    });
+
+    slide7.addText("Rapportering och nästa steg", {
+        x: 0.5,
+        y: 0.5,
+        fontSize: 22,
+        bold: true,
+        color: "69b898",
+    });
+    slide7.addText(
+        `Transparens är A och O. Ni ska alltid veta vad vi gör och vilka resultat det ger. Vi föreslår månatliga rapporter som på ett lättförståeligt sätt visar utvecklingen i trafik och ranking, samt kvartalsvisa avstämningar där vi diskuterar resultaten och planerar framåt.
+
+Vi ser oss inte som en leverantör, utan som er partner. Er framgång är vår framgång.
+
+Redo att börja resan?
+${observations.ready || "Ingen data"}
+
+Med vänliga hälsningar,
+Våning 18
+epost@dinsida.se
+070-123 45 67`,
+        {
+            x: 0.5,
+            y: 3,
+            fontSize: 13,
+            lineSpacingMultiple: 1.2,
+            color: "000000",
+        }
+    );
+
+    // --- Save file ---
+    pptx.writeFile({ fileName: `SEO_Strategi_${formData.domainName}.pptx` });
+};
 
 // PDF Document Structure/layout
 const MyPDF = ({ formData, observations, favicon }) => (
@@ -306,6 +951,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                             Nyckelordsanalys & Åtgärdplan:
                         </Text>
                         <Paragraph>
+                            {" "}
                             {observations.q1_nyckelord_atgard}
                         </Paragraph>
                     </Text>
@@ -381,7 +1027,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
             <View style={styles.listItem}>
                 <Text style={styles.listText}>
                     <Text style={styles.bullet}>• </Text>
-                    <Text style={{ fontWeight: "bold" }}>Offpage: </Text>
+                    <Text style={{ fontWeight: "bold" }}>Offpage:</Text>
                     <Paragraph> {observations.q1_offpage}</Paragraph>
                 </Text>
             </View>
@@ -429,6 +1075,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                             Uppdatera befintligt innehåll:
                         </Text>
                         <Paragraph>
+                            {" "}
                             {observations.q2_uppdatera_innehall}
                         </Paragraph>
                     </Text>
@@ -575,6 +1222,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                             Utvärdera rankingar & trafik:
                         </Text>
                         <Paragraph>
+                            {" "}
                             {observations.q4_utvärdera_rankingar_trafik}
                         </Paragraph>
                     </Text>
@@ -587,6 +1235,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                             Skapa avancerat innehåll:
                         </Text>
                         <Paragraph>
+                            {" "}
                             {observations.q4_skapa_avancerat_innehåll}
                         </Paragraph>
                     </Text>
@@ -599,6 +1248,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                             Bygga starkare länkar:
                         </Text>
                         <Paragraph>
+                            {" "}
                             {observations.q4_bygga_starkare_länkar}
                         </Paragraph>
                     </Text>
@@ -610,7 +1260,10 @@ const MyPDF = ({ formData, observations, favicon }) => (
                         <Text style={{ fontWeight: "bold" }}>
                             Eventuellt utbildning för kund:
                         </Text>
-                        <Paragraph>{observations.q4_utbildning_kund}</Paragraph>
+                        <Paragraph>
+                            {" "}
+                            {observations.q4_utbildning_kund}
+                        </Paragraph>
                     </Text>
                 </View>
 
@@ -644,7 +1297,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                     <Text style={styles.listText}>
                         <Text style={styles.bullet}>• </Text>
                         <Text style={{ fontWeight: "bold" }}>ROI-analys: </Text>
-                        <Paragraph>{observations.q4_roi_analys}</Paragraph>
+                        <Paragraph> {observations.q4_roi_analys}</Paragraph>
                     </Text>
                 </View>
 
@@ -655,6 +1308,7 @@ const MyPDF = ({ formData, observations, favicon }) => (
                             Strategimöte och plan för nästa år:
                         </Text>
                         <Paragraph>
+                            {" "}
                             {observations.q4_strategimöte_plan}
                         </Paragraph>
                     </Text>
@@ -879,6 +1533,7 @@ export default function InformationForm() {
                             <p
                                 contentEditable
                                 suppressContentEditableWarning={true}
+                                style={{ marginBottom: "1rem" }}
                                 onBlur={(e) =>
                                     setObservations({
                                         ...observations,
@@ -898,7 +1553,10 @@ export default function InformationForm() {
                             <p
                                 contentEditable
                                 suppressContentEditableWarning={true}
-                                style={{ textAlign: "center" }}
+                                style={{
+                                    textAlign: "left",
+                                    marginBottom: "1rem",
+                                }}
                                 onBlur={(e) =>
                                     setObservations({
                                         ...observations,
@@ -1809,6 +2467,14 @@ export default function InformationForm() {
                             className="px-4 py-2 bg-red-500 text-white rounded-lg text-center hover:bg-red-600 transition"
                         >
                             Download PDF
+                        </button>
+                        <button
+                            onClick={() =>
+                                createPPT({ formData, observations, favicon })
+                            }
+                            className="bg-blue-600 text-white px-4 py-2 rounded"
+                        >
+                            Download PowerPoint
                         </button>
                     </div>
                 )}
