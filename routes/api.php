@@ -85,14 +85,17 @@ Route::post('/generate-observations', function (Request $request) {
     4. För varje Q1, Q2, Q3, Q4 nedan, förklara varför det är viktigt, dessa är
     våra huvudaktiviteter som ingår så vi ska förklara till en kund vad som sker där, och sammanfatta det så de förstår.
     5. Ge endast råd och förslag som är realistiska och genomförbara av Våning 18. Undvik att lova eller antyda åtgärder som vi inte kommer att utföra.
+    6. Teknisk, Onpage och Offpage där ska du skriva observationer utifrån frågeställningen som står brevid, men skriv inte för mycket.
     
     Viktigt:
-    - För alla Q2, Q3 och Q4, utförliga men enkla förklaringar, skriv de gärna korta men med bra information.
+    - För alla Q1, Q2, Q3 och Q4, utförliga men enkla förklaringar, skriv de gärna korta men med bra information.
     - Undvik tekniska ord.
     - Prioritera tydlighet och värme framför korthet.
     - Undvik att skriva Q1 för långa.
     
-    
+    Teknisk: Grunden för allt. Det handlar om sidans hastighet, mobilvänlighet och struktur. Om Google inte kan läsa er sida spelar resten mindre roll.
+    Onpage: Hur väl innehållet på era sidor (texter, rubriker, bilder) matchar det era kunder söker efter.
+    Offpage: Hur andra på internet ser på er sida. Länkar från andra relevanta hemsidor fungerar som rekommendationer och bygger er auktoritet.
     Q1_Seo_Teknisk: SEO-audit och teknisk analys:
     Q1_Nyckelord_Åtgärd: Nyckelordsanalys och Åtgärdsplan:
     Q1_Konkurrent_Kpi: Kokurrentanalys och KPI-sättning:

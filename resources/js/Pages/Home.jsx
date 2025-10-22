@@ -363,7 +363,7 @@ Detta gör processen tydlig och mätbar`,
     // --- Page 3a: Kvartal 1 - Analys & Strategiarbete ---
     const slide3a = pptx.addSlide();
     slide3a.addImage({
-        path: `${window.location.origin}/images/kvarV4.png`,
+        path: `${window.location.origin}/images/n1.png`,
         x: 0,
         y: 0,
         w: pptx.presLayout.width,
@@ -371,7 +371,7 @@ Detta gör processen tydlig och mätbar`,
     });
     slide3a.addText(
         [
-            { text: "Kvartal 1", options: { color: "69b898", bold: true } },
+            { text: "Kvartal 1", options: { color: "489C84", bold: true } },
             {
                 text: ": Grunden – Teknisk excellens",
                 options: { color: "000000", bold: true },
@@ -384,15 +384,19 @@ Detta gör processen tydlig och mätbar`,
             bold: true,
         }
     );
+
+    slide3a.addText("Fokusområde: Analys & Strategiarbete:", {
+        x: 0.5,
+        y: 1.3,
+        fontSize: 17,
+        color: "000000",
+        bold: true,
+    });
     slide3a.addText(
         [
             {
-                text: "Fokusområde: Analys & Strategiarbete:\n\n",
-                options: { color: "000000", bold: true },
-            },
-            {
                 text: "• SEO-audit & teknisk analys: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q1_seo_teknisk}\n`,
@@ -400,7 +404,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Nyckelordsanalys & Åtgärdplan: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q1_nyckelord_atgard}\n`,
@@ -408,7 +412,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Konkurrentanalys & KPI-sättning: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q1_konkurrent_kpi}\n`,
@@ -416,7 +420,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Spårning (GA4/GSC) & Offpage-insikter: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q1_spårning_offpage}`,
@@ -429,7 +433,7 @@ Detta gör processen tydlig och mätbar`,
     // --- Page 3b: Kvartal 1 - On-page & Struktur ---
     const slide3b = pptx.addSlide();
     slide3b.addImage({
-        path: `${window.location.origin}/images/kvarV4.png`,
+        path: `${window.location.origin}/images/n1.png`,
         x: 0,
         y: 0,
         w: pptx.presLayout.width,
@@ -437,7 +441,7 @@ Detta gör processen tydlig och mätbar`,
     });
     slide3b.addText(
         [
-            { text: "Kvartal 1", options: { color: "69b898", bold: true } },
+            { text: "Kvartal 1", options: { color: "489C84", bold: true } },
             {
                 text: ": Grunden – Teknisk excellens",
                 options: { color: "000000", bold: true },
@@ -450,15 +454,20 @@ Detta gör processen tydlig och mätbar`,
             bold: true,
         }
     );
+
+    slide3b.addText("Fokusområde: On-page & Struktur:", {
+        x: 0.5,
+        y: 1.3,
+        fontSize: 17,
+        color: "000000",
+        bold: true,
+    });
+
     slide3b.addText(
         [
             {
-                text: "Fokusområde: On-page & Struktur:\n\n",
-                options: { color: "000000", bold: true },
-            },
-            {
                 text: "• Optimera titlar, metabeskrivningar, headings, URL-struktur: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q1_title_meta_head_url}\n`,
@@ -466,7 +475,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Skapa sajtstruktur & interna länkar: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q1_title_meta_head_url}\n`,
@@ -474,13 +483,13 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Innehållsplan för 12 månader: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q1_innehallsplan}\n`,
                 options: { color: "000000" },
             },
-            { text: "• Offpage: ", options: { color: "69b898", bold: true } },
+            { text: "• Offpage: ", options: { color: "489C84", bold: true } },
             {
                 text: `${observations.q1_offpage}`,
                 options: { color: "000000" },
@@ -492,7 +501,7 @@ Detta gör processen tydlig och mätbar`,
     // --- Page 4: Kvartal 2 ---
     const slide4 = pptx.addSlide();
     slide4.addImage({
-        path: `${window.location.origin}/images/kvarV3.png`,
+        path: `${window.location.origin}/images/n2.png`,
         x: 0,
         y: 0,
         w: pptx.presLayout.width,
@@ -500,7 +509,7 @@ Detta gör processen tydlig och mätbar`,
     });
     slide4.addText(
         [
-            { text: "Kvartal 2", options: { color: "69b898", bold: true } },
+            { text: "Kvartal 2", options: { color: "489C84", bold: true } },
             {
                 text: ": Innehåll & relevans",
                 options: { color: "000000", bold: true },
@@ -513,15 +522,20 @@ Detta gör processen tydlig och mätbar`,
             bold: true,
         }
     );
+
+    slide4.addText("Fokusområde: Innehåll & Auktoritet:", {
+        x: 0.5,
+        y: 1.3,
+        fontSize: 17,
+        color: "000000",
+        bold: true,
+    });
+
     slide4.addText(
         [
             {
-                text: "Fokusområde: Innehåll & Auktoritet:\n\n",
-                options: { color: "000000", bold: true },
-            },
-            {
                 text: "• Publicera artiklar/guider: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q2_publicera_art_guide}\n`,
@@ -529,7 +543,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Uppdatera befintligt innehåll: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q2_uppdatera_innehall}\n`,
@@ -537,7 +551,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Bygga topical authority: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q2_bygga_authority}\n`,
@@ -545,13 +559,13 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Starta länkstrategi & outreach: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q2_lankstrategi_outreach}\n`,
                 options: { color: "000000" },
             },
-            { text: "• Offpage: ", options: { color: "69b898", bold: true } },
+            { text: "• Offpage: ", options: { color: "489C84", bold: true } },
             {
                 text: `${observations.q2_offpage}`,
                 options: { color: "000000" },
@@ -563,7 +577,7 @@ Detta gör processen tydlig och mätbar`,
     // --- Page 5: Kvartal 3 ---
     const slide5 = pptx.addSlide();
     slide5.addImage({
-        path: `${window.location.origin}/images/kvarV2.png`,
+        path: `${window.location.origin}/images/n3.png`,
         x: 0,
         y: 0,
         w: pptx.presLayout.width,
@@ -571,7 +585,7 @@ Detta gör processen tydlig och mätbar`,
     });
     slide5.addText(
         [
-            { text: "Kvartal 3", options: { color: "69b898", bold: true } },
+            { text: "Kvartal 3", options: { color: "489C84", bold: true } },
             {
                 text: ": Auktoritet & förtroende",
                 options: { color: "000000", bold: true },
@@ -585,15 +599,19 @@ Detta gör processen tydlig och mätbar`,
         }
     );
 
+    slide5.addText("Fokusområde: Expansion & Conversion:", {
+        x: 0.5,
+        y: 1.3,
+        fontSize: 17,
+        color: "000000",
+        bold: true,
+    });
+
     slide5.addText(
         [
             {
-                text: "Fokusområde: Expansion & Conversion:\n\n",
-                options: { color: "000000", bold: true },
-            },
-            {
                 text: "• Nya landningssidor: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q3_nya_landningssidor}\n`,
@@ -601,7 +619,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Lokal SEO om relevant: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q3_lokal_seo}\n`,
@@ -609,30 +627,30 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• CRO A/B, UX: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
-            { text: `${observations.q3_cro}\n`, options: { color: "FFFFFF" } },
+            { text: `${observations.q3_cro}\n`, options: { color: "000000" } },
             {
                 text: "• Schema markup & rich results: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q3_schema_markup_rich_results}\n`,
                 options: { color: "000000" },
             },
-            { text: "• Offpage: ", options: { color: "69b898", bold: true } },
+            { text: "• Offpage: ", options: { color: "489C84", bold: true } },
             {
                 text: `${observations.q3_offpage}`,
                 options: { color: "000000" },
             },
         ],
-        { x: 0.5, y: 3, fontSize: 13, lineSpacingMultiple: 1.3, w: 9 }
+        { x: 0.5, y: 3.2, fontSize: 13, lineSpacingMultiple: 1.3, w: 9 }
     );
 
     // --- Page 6: Kvartal 4 ---
     const slide6 = pptx.addSlide();
     slide6.addImage({
-        path: `${window.location.origin}/images/kvarV1.png`,
+        path: `${window.location.origin}/images/n4.png`,
         x: 0,
         y: 0,
         w: pptx.presLayout.width,
@@ -641,7 +659,7 @@ Detta gör processen tydlig och mätbar`,
 
     slide6.addText(
         [
-            { text: "Kvartal 4", options: { color: "69b898", bold: true } },
+            { text: "Kvartal 4", options: { color: "489C84", bold: true } },
             {
                 text: ": Analys & expansion",
                 options: { color: "000000", bold: true },
@@ -655,15 +673,19 @@ Detta gör processen tydlig och mätbar`,
         }
     );
 
+    slide6.addText("Fokusområde: Skalning & Justering:", {
+        x: 0.5,
+        y: 1.3,
+        fontSize: 17,
+        color: "000000",
+        bold: true,
+    });
+
     slide6.addText(
         [
             {
-                text: "Fokusområde: Skalning & Justering:\n\n",
-                options: { color: "000000", bold: true },
-            },
-            {
                 text: "• Utvärdera rankingar & trafik: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q4_utvärdera_rankingar_trafik}\n`,
@@ -671,7 +693,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Skapa avancerat innehåll: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q4_skapa_avancerat_innehåll}\n`,
@@ -679,7 +701,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Bygga starkare länkar: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q4_bygga_starkare_länkar}\n`,
@@ -687,25 +709,25 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Eventuellt utbildning för kund: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q4_utbildning_kund}\n`,
                 options: { color: "000000" },
             },
-            { text: "• Offpage: ", options: { color: "69b898", bold: true } },
+            { text: "• Offpage: ", options: { color: "489C84", bold: true } },
             {
                 text: `${observations.q4_offpage}`,
                 options: { color: "000000" },
             },
         ],
-        { x: 0.5, y: 3, fontSize: 13, lineSpacingMultiple: 1.3, w: 9 }
+        { x: 0.5, y: 3.2, fontSize: 13, lineSpacingMultiple: 1.3, w: 9 }
     );
 
     // --- Page 6b: Kvartal 4 - Utvärdering ---
     const slide6b = pptx.addSlide();
     slide6b.addImage({
-        path: `${window.location.origin}/images/kvarV1.png`,
+        path: `${window.location.origin}/images/n4.png`,
         x: 0,
         y: 0,
         w: pptx.presLayout.width,
@@ -713,7 +735,7 @@ Detta gör processen tydlig och mätbar`,
     });
     slide6b.addText(
         [
-            { text: "Kvartal 4", options: { color: "69b898", bold: true } },
+            { text: "Kvartal 4", options: { color: "489C84", bold: true } },
             {
                 text: ": Analys & expansion",
                 options: { color: "000000", bold: true },
@@ -727,15 +749,19 @@ Detta gör processen tydlig och mätbar`,
         }
     );
 
+    slide6b.addText("Fokusområde: Utvärdering & Nästa steg:", {
+        x: 0.5,
+        y: 1.3,
+        fontSize: 17,
+        color: "000000",
+        bold: true,
+    });
+
     slide6b.addText(
         [
             {
-                text: "Fokusområde: Utvärdering & Nästa steg:\n\n",
-                options: { color: "000000", bold: true },
-            },
-            {
                 text: "• Årsrapport med resultat mot KPI:er: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q4_arsrapport}\n`,
@@ -743,7 +769,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• ROI-analys: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q4_roi_analys}\n`,
@@ -751,7 +777,7 @@ Detta gör processen tydlig och mätbar`,
             },
             {
                 text: "• Strategimöte och plan för nästa år: ",
-                options: { color: "69b898", bold: true },
+                options: { color: "489C84", bold: true },
             },
             {
                 text: `${observations.q4_strategimöte_plan}`,
@@ -765,7 +791,7 @@ Detta gör processen tydlig och mätbar`,
     const slide7 = pptx.addSlide();
 
     slide7.addImage({
-        path: `${window.location.origin}/images/end1.png`,
+        path: `${window.location.origin}/images/endD.png`,
         x: 0,
         y: 0,
         w: pptx.presLayout.width,
@@ -777,7 +803,7 @@ Detta gör processen tydlig och mätbar`,
         y: 0.5,
         fontSize: 22,
         bold: true,
-        color: "69b898",
+        color: "489C84",
     });
     slide7.addText(
         `Transparens är A och O. Ni ska alltid veta vad vi gör och vilka resultat det ger. Vi föreslår månatliga rapporter som på ett lättförståeligt sätt visar utvecklingen i trafik och ranking, samt kvartalsvisa avstämningar där vi diskuterar resultaten och planerar framåt.
